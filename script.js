@@ -158,9 +158,13 @@ require([
 
 
         // Polyline street
-        const polyline = Create("polyline", [new Location(-118.821527826096, 34.0139576938577), new Location(-118.814893761649, 34.0080602407843), new Location(-118.808878330345, 34.0016642996246)]);
-        const simpleLineSymbol = SetUI("simple-line", [226, 119, 40], 3)
-        graphicsLayer.add(BuildUI(polyline, simpleLineSymbol));
+        const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
+        polylineApi.data.forEach(e=>{
+            graphicsLayer.add(BuildUI(
+                Create("polyline", ListLocationFromArray(e.points)),
+                SetUI("simple-line", [240, 99, 72], 2),
+                attributesSetup("Mô tả", "Đây là polyline"), popupTemplateSetup()));
+        })
 
     })();
 });
