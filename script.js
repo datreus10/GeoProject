@@ -104,67 +104,61 @@ require([
     (async () => {
 
         // Polygon Province
-        const polygonApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/diaphantinh.json");
-
-        const polyCanTho = polygonApi.features[12].geometry.coordinates;
-        polyCanTho.forEach(e => {
-            e.forEach(e1 => {
-                graphicsLayer.add(
-                    BuildUI(Create("polygon", ListLocationFromArray(e1)),
-                        SetUI("simple-fill", [206, 245, 144, 0.8], 1, [255, 255, 255], 1),
-                        attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-            })
-        })
-
-        const polyBRVT = polygonApi.features[1].geometry.coordinates;
+        const polygonApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/diaphantinh2.json");
+       
+        const polyBRVT = polygonApi.data[0].points
         polyBRVT.forEach(e => {
-            e.forEach(e1 => {
-                graphicsLayer.add(
-                    BuildUI(Create("polygon", ListLocationFromArray(e1)),
-                        SetUI("simple-fill", [249, 230, 136, 0.8], 1, [255, 255, 255], 1),
-                        attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-            })
+            graphicsLayer.add(
+                BuildUI(Create("polygon", ListLocationFromArray(e)),
+                    SetUI("simple-fill", [249, 230, 136, 0.8], 1, [255, 255, 255], 0),
+                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
         })
 
-        const polyLongAn = polygonApi.features[37].geometry.coordinates;
-        polyLongAn.forEach(e => {
-            e.forEach(e1 => {
-                graphicsLayer.add(
-                    BuildUI(Create("polygon", ListLocationFromArray(e1)),
-                        SetUI("simple-fill", [181, 222, 255, 0.8], 1, [255, 255, 255], 1),
-                        attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-            })
+        const polyCanTho = polygonApi.data[1].points
+        polyCanTho.forEach(e => {
+            graphicsLayer.add(
+                BuildUI(Create("polygon", ListLocationFromArray(e)),
+                    SetUI("simple-fill", [206, 245, 144, 0.8], 1, [255, 255, 255], 0),
+                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
         })
 
-        const polyDongThap = polygonApi.features[19].geometry.coordinates;
-        polyDongThap.forEach(e => {
-            e.forEach(e1 => {
-                graphicsLayer.add(
-                    BuildUI(Create("polygon", ListLocationFromArray(e1)),
-                        SetUI("simple-fill", [181, 255, 232, 0.8], 1, [255, 255, 255], 1),
-                        attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-            })
-        })
-
-        const polyTienGiang = polygonApi.features[56].geometry.coordinates;
+        const polyTienGiang = polygonApi.data[2].points
         polyTienGiang.forEach(e => {
-            e.forEach(e1 => {
-                graphicsLayer.add(
-                    BuildUI(Create("polygon", ListLocationFromArray(e1)),
-                        SetUI("simple-fill", [227, 139, 79, 0.8], 1, [255, 255, 255], 1),
-                        attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-            })
+            graphicsLayer.add(
+                BuildUI(Create("polygon", ListLocationFromArray(e)),
+                    SetUI("simple-fill", [227, 139, 79, 0.8], 1, [255, 255, 255], 1),
+                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
         })
 
-
-        // Polyline street
-        const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
-        polylineApi.data.forEach(e=>{
-            graphicsLayer.add(BuildUI(
-                Create("polyline", ListLocationFromArray(e.points)),
-                SetUI("simple-line", [240, 99, 72], 2),
-                attributesSetup("Mô tả", "Đây là polyline"), popupTemplateSetup()));
+        const polyDongThap = polygonApi.data[3].points
+        polyDongThap.forEach(e => {
+            graphicsLayer.add(
+                BuildUI(Create("polygon", ListLocationFromArray(e)),
+                    SetUI("simple-fill", [181, 255, 232, 0.8], 1, [255, 255, 255], 1),
+                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
         })
+
+        const polyLongAn = polygonApi.data[4].points;
+        polyLongAn.forEach(e => {
+            graphicsLayer.add(
+                BuildUI(Create("polygon", ListLocationFromArray(e)),
+                    SetUI("simple-fill", [181, 222, 255, 0.8], 1, [255, 255, 255], 1),
+                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
+        })
+
+        
+
+       
+
+
+        // // Polyline street
+        // const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
+        // polylineApi.data.forEach(e=>{
+        //     graphicsLayer.add(BuildUI(
+        //         Create("polyline", ListLocationFromArray(e.points)),
+        //         SetUI("simple-line", [240, 99, 72], 2),
+        //         attributesSetup("Mô tả", "Đây là polyline"), popupTemplateSetup()));
+        // })
 
     })();
 });
