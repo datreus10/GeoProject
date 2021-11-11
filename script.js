@@ -77,6 +77,9 @@ require([
                 attributesSetup(`Đường ${data.name}`, popup), popupTemplateSetup()));
     }
 
+    const DrawPoint = (data, uiTemplate) => {
+        graphicsLayer.add(BuildUI(Create("point", data.point), uiTemplate));
+    }
 
     // Execute
     const map = new Map({
@@ -97,7 +100,7 @@ require([
         // Polygon Province
 
         // remote
-        const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/tinh.json");
+        const polygonApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/tinh.json");
         //local
         //const polygonApi = await GetData("./data/tinh.json");
 
@@ -119,9 +122,25 @@ require([
         const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
         //local
         //const polylineApi = await GetData("./data/duong.json");
-        polylineApi.data.forEach(e=>DrawStreet(e,SetUI("simple-line", [240, 99, 72], 2)))
+        polylineApi.data.forEach(e => DrawStreet(e, SetUI("simple-line", [240, 99, 72], 2)))
 
 
+        // Point
+        // remote
+        //const pointApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
+        //local
+        const pointApi = await GetData("./data/diem.json");
+        pointApi.data.forEach(e => {
+            const simpleMarkerSymbol = {
+                type: "picture-marker",
+                url: `./image/${e.type}.png`,
+                width: "48px",
+                height: "48px"
+            };
+            DrawPoint(e,simpleMarkerSymbol)
+        })
+
+        
     })();
 
 

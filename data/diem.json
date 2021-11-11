@@ -1,0 +1,64 @@
+{
+    "data":[
+        {
+            "name":"Trường Đại học Tiền Giang cơ sở 2",
+            "type": "university",
+            "point": [106.3255782,10.4239887]
+        },
+        {
+            "name":"Trường Đại học Bà Rịa - Vũng Tàu",
+            "type": "university",
+            "point": [107.0800016,10.3485868]
+        },
+        {
+            "name":"Đại học Cần Thơ",
+            "type": "university",
+            "point": [105.7684266,10.029939]
+        },
+        {
+            "name":"Bảo tàng Tiền Giang",
+            "type": "museum",
+            "point": [106.1313677,10.4017855]
+        },
+        {
+            "name":"Bảo Tàng Đồng Tháp",
+            "type": "museum",
+            "point": [105.630321,10.4532131]
+        },
+        {
+            "name":"Bảo tàng Bà Rịa–Vũng Tàu",
+            "type": "museum",
+            "point": [107.0672968,10.350218]
+        },
+        {
+            "name":"Công viên Tết Mậu Thân",
+            "type": "park",
+            "point": [106.347814,10.3554016]
+        },
+        {
+            "name":"Công viên 7 Kỳ Quan",
+            "type": "park",
+            "point": [106.3215492,10.9004266]
+        },
+        {
+            "name":"Công Viên Bến Ninh Kiều",
+            "type": "park",
+            "point": [105.7473428,10.0428608]
+        },
+        {
+            "name":"Cầu Rạch Miễu",
+            "type": "bridge",
+            "point": [106.343418359756,10.3382881650278]
+        },
+        {
+            "name":"Cầu Mỹ Thuận",
+            "type": "bridge",
+            "point": [105.909876823425,10.2778675088588]
+        },
+        {
+            "name":"Cầu Cần Thơ",
+            "type": "bridge",
+            "point": [105.809401273727,10.0322455437737]
+        }
+    ]
+}
