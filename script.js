@@ -96,13 +96,13 @@ require([
 
     // Main function
     (async () => {
+        // remote
+        const baseURL = "https://raw.githubusercontent.com/datreus10/GeoProject/master";
+        // local
+        //const baseURL = ".";
 
         // Polygon Province
-
-        // remote
-        const polygonApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/tinh.json");
-        //local
-        //const polygonApi = await GetData("./data/tinh.json");
+        const polygonApi = await GetData(`${baseURL}/data/tinh.json`);
 
         // Bà Rịa - Vũng Tàu
         DrawProvince(polygonApi.data[0], SetUI("simple-fill", [249, 230, 136, 0.8], 1, [255, 255, 255], 0))
@@ -117,23 +117,16 @@ require([
 
 
         // Polyline Steet
-
-        // remote
-        const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
-        //local
-        //const polylineApi = await GetData("./data/duong.json");
+        const polylineApi = await GetData(`${baseURL}/data/duong.json`);
         polylineApi.data.forEach(e => DrawStreet(e, SetUI("simple-line", [240, 99, 72], 2)))
 
 
         // Point
-        // remote
-        //const pointApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
-        //local
-        const pointApi = await GetData("./data/diem.json");
+        const pointApi = await GetData(`${baseURL}/data/diem.json`);
         pointApi.data.forEach(e => {
             const simpleMarkerSymbol = {
                 type: "picture-marker",
-                url: `./image/${e.type}.png`,
+                url: `${baseURL}/image/${e.type}.png`,
                 width: "48px",
                 height: "48px"
             };
