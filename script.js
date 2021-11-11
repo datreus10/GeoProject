@@ -97,9 +97,9 @@ require([
         // Polygon Province
 
         // remote
-        // const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/diaphantinh2.json");
+        const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/tinh.json");
         //local
-        const polygonApi = await GetData("./data/tinh.json");
+        //const polygonApi = await GetData("./data/tinh.json");
 
         // Bà Rịa - Vũng Tàu
         DrawProvince(polygonApi.data[0], SetUI("simple-fill", [249, 230, 136, 0.8], 1, [255, 255, 255], 0))
@@ -116,9 +116,9 @@ require([
         // Polyline Steet
 
         // remote
-        // const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
+        const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
         //local
-        const polylineApi = await GetData("./data/duong.json");
+        //const polylineApi = await GetData("./data/duong.json");
         polylineApi.data.forEach(e=>DrawStreet(e,SetUI("simple-line", [240, 99, 72], 2)))
 
 
