@@ -5,47 +5,23 @@ require([
     "esri/layers/GraphicsLayer",
 
 ], function (Map, MapView, Graphic, GraphicsLayer) {
-    class Location {
-        constructor(longitude, latitude) {
-            this.longitude = longitude;
-            this.latitude = latitude;
-        }
-        getLongitude() {
-            return this.longitude;
-        }
-        getLatitude() {
-            return this.latitude;
-        }
-    }
     const Create = (typeofcreate, createposition) => {
-        let haveList = false;
-        createposition.length == 1 ? haveList = false : haveList = true;
-        let listlocation = [];
-
-        if (!haveList) {
-            return {
-                type: typeofcreate,
-                longitude: createposition[0].getLongitude(),
-                latitude: createposition[0].getLatitude()
-            }
+        const result = {
+            type: typeofcreate
         }
-        else {
-            createposition.forEach(position => {
-                listlocation.push([position.getLongitude(), position.getLatitude()]);
-            });
-            if (typeofcreate == "polyline") {
-                return {
-                    type: typeofcreate,
-                    paths: listlocation
-                }
-            }
-            if (typeofcreate == "polygon") {
-                return {
-                    type: typeofcreate,
-                    rings: listlocation,
-                }
-            }
+        switch (typeofcreate) {
+            case "polyline":
+                result.paths = createposition
+                break;
+            case "polygon":
+                result.rings = createposition
+                break;
+            default: //point
+                result.longitude = createposition[0];
+                result.latitude = createposition[1];
+                break;
         }
+        return result;
     }
     const SetUI = (typeofSetUI, colorSetUI, widthSetUI = 1, outlinecolorSetUI = colorSetUI, outlinewidthSetUI = 1) => {
         return {
@@ -80,10 +56,25 @@ require([
     }
 
     //Helper function
-    const ListLocationFromArray = array => array.map(e => new Location(e[0], e[1]))
     const GetData = async url => {
         const response = await fetch(url);
         return await response.json();
+    }
+
+    const DrawProvince = (data, uiTemplate) => {
+        const popup = `Diện tích: ${data.area}\nDân số: ${data.population}`;
+        graphicsLayer.add(
+            BuildUI(Create("polygon", data.points),
+                uiTemplate,
+                attributesSetup(`Tỉnh ${data.name}`, popup), popupTemplateSetup()));
+    }
+
+    const DrawStreet = (data, uiTemplate) => {
+        const popup = `Chiều dài: ${data.distance} km\nCác tỉnh đi qua: ${data.provinces}`;
+        graphicsLayer.add(
+            BuildUI(Create("polyline", data.points),
+                uiTemplate,
+                attributesSetup(`Đường ${data.name}`, popup), popupTemplateSetup()));
     }
 
 
@@ -104,61 +95,34 @@ require([
     (async () => {
 
         // Polygon Province
-        const polygonApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/diaphantinh2.json");
-       
-        const polyBRVT = polygonApi.data[0].points
-        polyBRVT.forEach(e => {
-            graphicsLayer.add(
-                BuildUI(Create("polygon", ListLocationFromArray(e)),
-                    SetUI("simple-fill", [249, 230, 136, 0.8], 1, [255, 255, 255], 0),
-                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-        })
 
-        const polyCanTho = polygonApi.data[1].points
-        polyCanTho.forEach(e => {
-            graphicsLayer.add(
-                BuildUI(Create("polygon", ListLocationFromArray(e)),
-                    SetUI("simple-fill", [206, 245, 144, 0.8], 1, [255, 255, 255], 0),
-                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-        })
+        // remote
+        // const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/diaphantinh2.json");
+        //local
+        const polygonApi = await GetData("./data/tinh.json");
 
-        const polyTienGiang = polygonApi.data[2].points
-        polyTienGiang.forEach(e => {
-            graphicsLayer.add(
-                BuildUI(Create("polygon", ListLocationFromArray(e)),
-                    SetUI("simple-fill", [227, 139, 79, 0.8], 1, [255, 255, 255], 1),
-                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-        })
-
-        const polyDongThap = polygonApi.data[3].points
-        polyDongThap.forEach(e => {
-            graphicsLayer.add(
-                BuildUI(Create("polygon", ListLocationFromArray(e)),
-                    SetUI("simple-fill", [181, 255, 232, 0.8], 1, [255, 255, 255], 1),
-                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-        })
-
-        const polyLongAn = polygonApi.data[4].points;
-        polyLongAn.forEach(e => {
-            graphicsLayer.add(
-                BuildUI(Create("polygon", ListLocationFromArray(e)),
-                    SetUI("simple-fill", [181, 222, 255, 0.8], 1, [255, 255, 255], 1),
-                    attributesSetup("Mô tả", "Đây là hình đa diện"), popupTemplateSetup()));
-        })
-
-        
-
-       
+        // Bà Rịa - Vũng Tàu
+        DrawProvince(polygonApi.data[0], SetUI("simple-fill", [249, 230, 136, 0.8], 1, [255, 255, 255], 0))
+        // Cần Thơ
+        DrawProvince(polygonApi.data[1], SetUI("simple-fill", [206, 245, 144, 0.8], 1, [255, 255, 255], 0))
+        // Tiền Giang
+        DrawProvince(polygonApi.data[2], SetUI("simple-fill", [227, 139, 79, 0.8], 1, [255, 255, 255], 1))
+        // Đồng Tháp
+        DrawProvince(polygonApi.data[3], SetUI("simple-fill", [181, 255, 232, 0.8], 1, [255, 255, 255], 1))
+        // Long An
+        DrawProvince(polygonApi.data[4], SetUI("simple-fill", [181, 222, 255, 0.8], 1, [255, 255, 255], 1))
 
 
-        // // Polyline street
+        // Polyline Steet
+
+        // remote
         // const polylineApi = await GetData("https://raw.githubusercontent.com/datreus10/GeoProject/master/data/duong.json");
-        // polylineApi.data.forEach(e=>{
-        //     graphicsLayer.add(BuildUI(
-        //         Create("polyline", ListLocationFromArray(e.points)),
-        //         SetUI("simple-line", [240, 99, 72], 2),
-        //         attributesSetup("Mô tả", "Đây là polyline"), popupTemplateSetup()));
-        // })
+        //local
+        const polylineApi = await GetData("./data/duong.json");
+        polylineApi.data.forEach(e=>DrawStreet(e,SetUI("simple-line", [240, 99, 72], 2)))
+
 
     })();
+
+
 });
